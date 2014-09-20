@@ -1,0 +1,24 @@
+{
+  "globals": {
+    "describe": true,
+    "it": true,
+    "angular": true,
+    "chai": true,
+    "beforeEach": true,
+    "inject": true,
+    "setImmediate": true
+  },
+
+  "node": true,
+
+  "curly": true,
+  "eqeqeq": true,
+  "forin": true,
+  "immed": true,
+  "newcap": true,
+  "noarg": true,
+  "noempty": true,
+  "nonew": true,
+  "undef": true,
+  "sub": true
+}

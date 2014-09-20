@@ -1,0 +1,19 @@
+{
+  "name": "rotelctl",
+  "version": "1.0.0",
+  "description": "Control Rotel amplifiers with RS232 connection",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "rotel",
+    "serial",
+    "rs232"
+  ],
+  "author": "Jeroen Baekelandt",
+  "license": "BSD-3-Clause",
+  "dependencies": {
+    "serialport": "^1.4.6"
+  }
+}
