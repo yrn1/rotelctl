@@ -2,9 +2,9 @@
   "name": "rotelctl",
   "version": "1.0.0",
   "description": "Control Rotel amplifiers with RS232 connection",
-  "main": "index.js",
+  "main": "lib/rotelctl.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "gulp"
   },
   "keywords": [
     "rotel",
@@ -16,5 +16,13 @@
   "dependencies": {
     "debug": "^2.0.0",
     "serialport": "^1.4.6"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.8",
+    "gulp-jshint": "^1.8.4",
+    "gulp-mocha": "^1.1.0",
+    "jshint-stylish": "^1.0.0",
+    "mocha": "^1.21.4",
+    "sinon": "^1.10.3"
   }
 }

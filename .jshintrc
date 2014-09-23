@@ -4,6 +4,7 @@
     "it": true,
     "angular": true,
     "chai": true,
+    "before": true,
     "beforeEach": true,
     "inject": true,
     "setImmediate": true
