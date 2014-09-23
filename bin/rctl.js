@@ -4,8 +4,8 @@
 
 var rotelctl = require('./../lib/rotelctl');
 
-if (process.argv.length !== 3) {
-  return console.error('Usage: '+ process.argv[1] +' <command>');
+if (process.argv.length < 3) {
+  return console.error('Usage: '+ process.argv[1] +' <command> [arg]');
 }
 
 var commandName = process.argv[2];
@@ -19,7 +19,11 @@ rctl.open(function(err) {
   if (err) {
     return console.error(err);
   }
-  rotelctl.RotelCtl.prototype[commandName].call(rctl, function(err, response){
+  var args = [];
+  if (process.argv.length > 3) {
+    args.push(process.argv[3]);
+  }
+  args.push(function(err, response){
     if (err) {
       console.error(err);
     } else {
@@ -31,4 +35,5 @@ rctl.open(function(err) {
       }
     });
   });
+  rotelctl.RotelCtl.prototype[commandName].apply(rctl, args);
 });
