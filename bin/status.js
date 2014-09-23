@@ -1,5 +1,7 @@
+#!/usr/bin/env node
+
 "use strict";
-var rotelctl = require('./lib/rotelctl');
+var rotelctl = require('./../lib/rotelctl');
 var async = require('async');
 
 var rctl = new rotelctl.RotelCtl('/dev/ttyUSB0');
