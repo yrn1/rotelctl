@@ -12,16 +12,16 @@ describe('rotelctl', function() {
         write: sinon.stub()
       };
     });
-    describe('getDisplay', function() {
+    describe('command with sized response', function() {
       it('should callback with error on send error', function(done) {
         rctl.sp.write.yields('ERR');
-        rctl.getDisplay('get_display!', function(err) {
+        rctl.getDisplay(function(err) {
           assert.equal(err, 'ERR');
           done();
         });
       });
       it('should callback when response received at once', function(done) {
-        rctl.getDisplay('get_display!', function(err, data) {
+        rctl.getDisplay(function(err, data) {
           assert.ifError(err);
           assert.equal(data, 'this is the full display data');
           done();
@@ -29,7 +29,7 @@ describe('rotelctl', function() {
         rctl.receive(new Buffer('display=029,this is the full display data'));
       });
       it('should callback when response received in pieces', function(done) {
-        rctl.getDisplay('get_display!', function(err, data) {
+        rctl.getDisplay(function(err, data) {
           assert.ifError(err);
           assert.equal(data, 'this is the full display data');
           done();
@@ -41,7 +41,7 @@ describe('rotelctl', function() {
         rctl.receive(new Buffer('a'));
       });
       it('should callback when response received in different pieces', function(done) {
-        rctl.getDisplay('get_display!', function(err, data) {
+        rctl.getDisplay(function(err, data) {
           assert.ifError(err);
           assert.equal(data, 'this is the full display data');
           done();
@@ -64,17 +64,81 @@ describe('rotelctl', function() {
             done();
           }
         };
-        rctl.getDisplay('get_display!', function(err, data) {
+        rctl.getDisplay(function(err, data) {
           assert.ifError(err);
           res1 = data;
           checkResults();
         });
-        rctl.getDisplay('get_display!', function(err, data) {
+        rctl.getDisplay(function(err, data) {
           assert.ifError(err);
           res2 = data;
           checkResults();
         });
         rctl.receive(new Buffer('display=029,this is the full display datadisplay=028,and this is another response'));
+      });
+    });
+
+    describe('command with delimited response', function() {
+      it('should callback with error on send error', function(done) {
+        rctl.sp.write.yields('ERR');
+        rctl.getDisplaySize(function(err) {
+          assert.equal(err, 'ERR');
+          done();
+        });
+      });
+      it('should callback when response received at once', function(done) {
+        rctl.getDisplaySize(function(err, data) {
+          assert.ifError(err);
+          assert.equal(data, '20,02');
+          done();
+        });
+        rctl.receive(new Buffer('display_size=20,02!'));
+      });
+      it('should callback when response received in pieces', function(done) {
+        rctl.getDisplaySize(function(err, data) {
+          assert.ifError(err);
+          assert.equal(data, '20,02');
+          done();
+        });
+        rctl.receive(new Buffer('display_size=20,'));
+        rctl.receive(new Buffer('0'));
+        rctl.receive(new Buffer('2!'));
+      });
+      it('should callback when response received in different pieces', function(done) {
+        rctl.getDisplaySize(function(err, data) {
+          assert.ifError(err);
+          assert.equal(data, '20,02');
+          done();
+        });
+        rctl.receive(new Buffer('displ'));
+        rctl.receive(new Buffer('ay_size='));
+        rctl.receive(new Buffer('2'));
+        rctl.receive(new Buffer('0'));
+        rctl.receive(new Buffer(','));
+        rctl.receive(new Buffer('02'));
+        rctl.receive(new Buffer('!'));
+      });
+      it('should callback for multiple calls when responses received at once', function(done) {
+        var res1 = null;
+        var res2 = null;
+        var checkResults = function() {
+          if (res1 && res2) {
+            assert.equal(res1, '20,02');
+            assert.equal(res2, 'a whole lot of crap');
+            done();
+          }
+        };
+        rctl.getDisplaySize(function(err, data) {
+          assert.ifError(err);
+          res1 = data;
+          checkResults();
+        });
+        rctl.getDisplaySize(function(err, data) {
+          assert.ifError(err);
+          res2 = data;
+          checkResults();
+        });
+        rctl.receive(new Buffer('display_size=20,02!display_size=a whole lot of crap!'));
       });
     });
   });

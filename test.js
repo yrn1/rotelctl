@@ -13,7 +13,21 @@ rctl.open(function(err) {
     'getDisplay2': rctl.getDisplay2.bind(rctl),
     'getProductType': rctl.getProductType.bind(rctl),
     'getProductVersion': rctl.getProductVersion.bind(rctl),
-    'getTcVersion': rctl.getTcVersion.bind(rctl)
+    'getTcVersion': rctl.getTcVersion.bind(rctl),
+    'getDisplaySize': rctl.getDisplaySize.bind(rctl),
+    'getDisplayUpdate': rctl.getDisplayUpdate.bind(rctl),
+    'getCurrentPower': rctl.getCurrentPower.bind(rctl),
+    'getCurrentSource': rctl.getCurrentSource.bind(rctl),
+    'getTone': rctl.getTone.bind(rctl),
+    'getBass': rctl.getBass.bind(rctl),
+    'getTreble': rctl.getTreble.bind(rctl),
+    'getBalance': rctl.getBalance.bind(rctl),
+    'getCurrentFrequency': rctl.getCurrentFrequency.bind(rctl),
+    'getPlayStatus': rctl.getPlayStatus.bind(rctl),
+    'getVolumeMax': rctl.getVolumeMax.bind(rctl),
+    'getVolumeMin': rctl.getVolumeMin.bind(rctl),
+    'getVolume': rctl.getVolume.bind(rctl),
+    'getToneMax': rctl.getToneMax.bind(rctl)
   }, function(err, results) {
     if (err) {
       console.error(err);
