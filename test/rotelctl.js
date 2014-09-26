@@ -3,7 +3,7 @@ var rotelctl = require('../lib/rotelctl');
 var assert = require('assert');
 var sinon = require('sinon');
 
-describe.skip('rotelctl', function() {
+describe('rotelctl', function() {
   describe('RotelCtl', function() {
     var rctl;
     beforeEach(function() {
