@@ -25,7 +25,6 @@ rctl.open(function(err) {
     'getTreble': rctl.getTreble.bind(rctl),
     'getBalance': rctl.getBalance.bind(rctl),
     'getCurrentFrequency': rctl.getCurrentFrequency.bind(rctl),
-    'getPlayStatus': rctl.getPlayStatus.bind(rctl),
     'getVolumeMax': rctl.getVolumeMax.bind(rctl),
     'getVolumeMin': rctl.getVolumeMin.bind(rctl),
     'getVolume': rctl.getVolume.bind(rctl),
