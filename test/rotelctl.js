@@ -54,7 +54,7 @@ describe.skip('rotelctl', function() {
         rctl.receive(new Buffer('is the full display dat'));
         rctl.receive(new Buffer('a'));
       });
-      it('should callback for multiple calls when responses received at once', function(done) {
+      it('should callback for multiple calls when responseDefs received at once', function(done) {
         var res1 = null;
         var res2 = null;
         var checkResults = function() {
@@ -118,7 +118,7 @@ describe.skip('rotelctl', function() {
         rctl.receive(new Buffer('02'));
         rctl.receive(new Buffer('!'));
       });
-      it('should callback for multiple calls when responses received at once', function(done) {
+      it('should callback for multiple calls when responseDefs received at once', function(done) {
         var res1 = null;
         var res2 = null;
         var checkResults = function() {
