@@ -13,6 +13,9 @@
   ],
   "author": "Jeroen Baekelandt",
   "license": "BSD-3-Clause",
+  "repository" : {
+    "type" : "git", "url" : "https://bitbucket.org/yrn1/rotelctl.git"
+  },
   "dependencies": {
     "async": "^0.9.0",
     "debug": "^2.0.0",
