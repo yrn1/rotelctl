@@ -1,6 +1,6 @@
 {
   "name": "rotelctl",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Control Rotel amplifiers with RS232 connection",
   "main": "lib/rotelctl.js",
   "scripts": {
