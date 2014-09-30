@@ -1,0 +1,99 @@
+# Control Rotel amplifiers with RS232 connection
+
+So far, this library has been tested with
+
+* Rotel RA-12 V02
+
+http://bwgroupsupport.com/download/rs232 lists several other Rotel components with a RS232 interface,
+so if you find that it works with, or you want to add support for, any of these devices, please let
+me know.
+
+## Usage
+### With callbacks
+
+    var RotelCtl = require('rotelctl').RotelCtl;
+    var rctl = new RotelCtl('/dev/ttyUSB0');
+    
+    rctl.open(function(err) {
+      if (err) {
+        return console.error(err);
+      }
+      rctl.getDisplay(function(err, response) {
+        if (err) {
+          return console.error(err);
+        }
+        console.log(response);
+        rctl.close(function(err) {
+          if (err) {
+            return console.error(err);
+          }
+        });
+      });
+    });
+
+### Without callbacks
+
+    var RotelCtl = require('rotelctl').RotelCtl;
+    var rctl = new RotelCtl('/dev/ttyUSB0');
+    
+    rctl.on('open', function() {
+      console.log('open');
+      rctl.getDisplay();
+    });
+    rctl.on('close', function() {
+      console.log('close');
+    });
+    rctl.on('error', function(err) {
+      console.log('error', err);
+    });
+    rctl.on('data', function(data) {
+      console.log('data', data);
+    });
+    
+    rctl.open();
+
+## API
+
+### Events
+
+* open: when the serial connection has been opened
+* close: when the serial connection has been closed
+* error: on error
+* data: when receiving data. The format of data is always
+
+        {
+          "name": "<name of data item>"
+          "value": "<value of event>"
+        }
+
+    The _name_ of the different data items is described below.
+
+### RotelCtl(port)
+
+Create a new RotelCtl.
+
+* port: the serial port device. E.g. /dev/ttyUSB0
+
+### open([callback])
+
+Open the serial connection.
+
+* callback(err): optional callback, called when the serial port is opened.
+
+### close([callback])
+
+Close the serial connection.
+
+* callback(err): optional callback, called when the serial port is closed.
+
+### isOpen()
+
+Returns true when the serial port has been opened.
+
+## Rotel commands
+
+All commands below take an optional callback(err, data).
+_data_ is always the same value as the _value_ part of event triggered by the command.
+
+Also see the Rotal documentation PDF in the docs directory.
+

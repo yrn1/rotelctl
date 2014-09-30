@@ -34,7 +34,7 @@ describe('rotelctl', function() {
           assert.equal(data, 'this is the full display data');
           done();
         });
-        rctl.receive(new Buffer('display=029,this is the full display data'));
+        rctl._receive(new Buffer('display=029,this is the full display data'));
       });
       it('should emit when response received at once', function(done) {
         rctl.on('data', function(data) {
@@ -42,7 +42,7 @@ describe('rotelctl', function() {
           done();
         });
         rctl.getDisplay();
-        rctl.receive(new Buffer('display=029,this is the full display data'));
+        rctl._receive(new Buffer('display=029,this is the full display data'));
       });
       it('should callback when response received in pieces', function(done) {
         rctl.getDisplay(function(err, data) {
@@ -50,11 +50,11 @@ describe('rotelctl', function() {
           assert.equal(data, 'this is the full display data');
           done();
         });
-        rctl.receive(new Buffer('display=029,th'));
-        rctl.receive(new Buffer('i'));
-        rctl.receive(new Buffer('s '));
-        rctl.receive(new Buffer('is the full display dat'));
-        rctl.receive(new Buffer('a'));
+        rctl._receive(new Buffer('display=029,th'));
+        rctl._receive(new Buffer('i'));
+        rctl._receive(new Buffer('s '));
+        rctl._receive(new Buffer('is the full display dat'));
+        rctl._receive(new Buffer('a'));
       });
       it('should emit when response received in pieces', function(done) {
         rctl.on('data', function(data) {
@@ -62,11 +62,11 @@ describe('rotelctl', function() {
           done();
         });
         rctl.getDisplay();
-        rctl.receive(new Buffer('display=029,th'));
-        rctl.receive(new Buffer('i'));
-        rctl.receive(new Buffer('s '));
-        rctl.receive(new Buffer('is the full display dat'));
-        rctl.receive(new Buffer('a'));
+        rctl._receive(new Buffer('display=029,th'));
+        rctl._receive(new Buffer('i'));
+        rctl._receive(new Buffer('s '));
+        rctl._receive(new Buffer('is the full display dat'));
+        rctl._receive(new Buffer('a'));
       });
       it('should callback when response received in different pieces', function(done) {
         rctl.getDisplay(function(err, data) {
@@ -74,13 +74,13 @@ describe('rotelctl', function() {
           assert.equal(data, 'this is the full display data');
           done();
         });
-        rctl.receive(new Buffer('displ'));
-        rctl.receive(new Buffer('ay=02'));
-        rctl.receive(new Buffer('9,th'));
-        rctl.receive(new Buffer('i'));
-        rctl.receive(new Buffer('s '));
-        rctl.receive(new Buffer('is the full display dat'));
-        rctl.receive(new Buffer('a'));
+        rctl._receive(new Buffer('displ'));
+        rctl._receive(new Buffer('ay=02'));
+        rctl._receive(new Buffer('9,th'));
+        rctl._receive(new Buffer('i'));
+        rctl._receive(new Buffer('s '));
+        rctl._receive(new Buffer('is the full display dat'));
+        rctl._receive(new Buffer('a'));
       });
       it('should emit when response received in different pieces', function(done) {
         rctl.on('data', function(data) {
@@ -88,13 +88,13 @@ describe('rotelctl', function() {
           done();
         });
         rctl.getDisplay();
-        rctl.receive(new Buffer('displ'));
-        rctl.receive(new Buffer('ay=02'));
-        rctl.receive(new Buffer('9,th'));
-        rctl.receive(new Buffer('i'));
-        rctl.receive(new Buffer('s '));
-        rctl.receive(new Buffer('is the full display dat'));
-        rctl.receive(new Buffer('a'));
+        rctl._receive(new Buffer('displ'));
+        rctl._receive(new Buffer('ay=02'));
+        rctl._receive(new Buffer('9,th'));
+        rctl._receive(new Buffer('i'));
+        rctl._receive(new Buffer('s '));
+        rctl._receive(new Buffer('is the full display dat'));
+        rctl._receive(new Buffer('a'));
       });
       it('should callback for multiple calls when responseDefs received at once', function(done) {
         var res1 = null;
@@ -116,7 +116,7 @@ describe('rotelctl', function() {
           res2 = data;
           checkResults();
         });
-        rctl.receive(new Buffer('display=029,this is the full display datadisplay=028,and this is another response'));
+        rctl._receive(new Buffer('display=029,this is the full display datadisplay=028,and this is another response'));
       });
       it('should emit for multiple calls when responseDefs received at once', function(done) {
         var res = [];
@@ -133,7 +133,7 @@ describe('rotelctl', function() {
         });
         rctl.getDisplay();
         rctl.getDisplay();
-        rctl.receive(new Buffer('display=029,this is the full display datadisplay=028,and this is another response'));
+        rctl._receive(new Buffer('display=029,this is the full display datadisplay=028,and this is another response'));
       });
     });
 
@@ -159,7 +159,7 @@ describe('rotelctl', function() {
           assert.equal(data, '20,02');
           done();
         });
-        rctl.receive(new Buffer('display_size=20,02!'));
+        rctl._receive(new Buffer('display_size=20,02!'));
       });
       it('should emit when response received at once', function(done) {
         rctl.on('data', function(data) {
@@ -167,7 +167,7 @@ describe('rotelctl', function() {
           done();
         });
         rctl.getDisplaySize();
-        rctl.receive(new Buffer('display_size=20,02!'));
+        rctl._receive(new Buffer('display_size=20,02!'));
       });
       it('should callback when response received in pieces', function(done) {
         rctl.getDisplaySize(function(err, data) {
@@ -175,9 +175,9 @@ describe('rotelctl', function() {
           assert.equal(data, '20,02');
           done();
         });
-        rctl.receive(new Buffer('display_size=20,'));
-        rctl.receive(new Buffer('0'));
-        rctl.receive(new Buffer('2!'));
+        rctl._receive(new Buffer('display_size=20,'));
+        rctl._receive(new Buffer('0'));
+        rctl._receive(new Buffer('2!'));
       });
       it('should emit when response received in pieces', function(done) {
         rctl.on('data', function(data) {
@@ -185,9 +185,9 @@ describe('rotelctl', function() {
           done();
         });
         rctl.getDisplaySize();
-        rctl.receive(new Buffer('display_size=20,'));
-        rctl.receive(new Buffer('0'));
-        rctl.receive(new Buffer('2!'));
+        rctl._receive(new Buffer('display_size=20,'));
+        rctl._receive(new Buffer('0'));
+        rctl._receive(new Buffer('2!'));
       });
       it('should callback when response received in different pieces', function(done) {
         rctl.getDisplaySize(function(err, data) {
@@ -195,13 +195,13 @@ describe('rotelctl', function() {
           assert.equal(data, '20,02');
           done();
         });
-        rctl.receive(new Buffer('displ'));
-        rctl.receive(new Buffer('ay_size='));
-        rctl.receive(new Buffer('2'));
-        rctl.receive(new Buffer('0'));
-        rctl.receive(new Buffer(','));
-        rctl.receive(new Buffer('02'));
-        rctl.receive(new Buffer('!'));
+        rctl._receive(new Buffer('displ'));
+        rctl._receive(new Buffer('ay_size='));
+        rctl._receive(new Buffer('2'));
+        rctl._receive(new Buffer('0'));
+        rctl._receive(new Buffer(','));
+        rctl._receive(new Buffer('02'));
+        rctl._receive(new Buffer('!'));
       });
       it('should emit when response received in different pieces', function(done) {
         rctl.on('data', function(data) {
@@ -209,13 +209,13 @@ describe('rotelctl', function() {
           done();
         });
         rctl.getDisplaySize();
-        rctl.receive(new Buffer('displ'));
-        rctl.receive(new Buffer('ay_size='));
-        rctl.receive(new Buffer('2'));
-        rctl.receive(new Buffer('0'));
-        rctl.receive(new Buffer(','));
-        rctl.receive(new Buffer('02'));
-        rctl.receive(new Buffer('!'));
+        rctl._receive(new Buffer('displ'));
+        rctl._receive(new Buffer('ay_size='));
+        rctl._receive(new Buffer('2'));
+        rctl._receive(new Buffer('0'));
+        rctl._receive(new Buffer(','));
+        rctl._receive(new Buffer('02'));
+        rctl._receive(new Buffer('!'));
       });
       it('should callback for multiple calls when responseDefs received at once', function(done) {
         var res1 = null;
@@ -237,7 +237,7 @@ describe('rotelctl', function() {
           res2 = data;
           checkResults();
         });
-        rctl.receive(new Buffer('display_size=20,02!display_size=a whole lot of crap!'));
+        rctl._receive(new Buffer('display_size=20,02!display_size=a whole lot of crap!'));
       });
       it('should emit for multiple calls when responseDefs received at once', function(done) {
         var res = [];
@@ -254,7 +254,7 @@ describe('rotelctl', function() {
         });
         rctl.getDisplaySize();
         rctl.getDisplaySize();
-        rctl.receive(new Buffer('display_size=20,02!display_size=a whole lot of crap!'));
+        rctl._receive(new Buffer('display_size=20,02!display_size=a whole lot of crap!'));
       });
     });
     describe('mixed commands', function() {
@@ -283,7 +283,7 @@ describe('rotelctl', function() {
           assert.ifError(err);
           assert.equal(data, 'V2.1.0');
         });
-        rctl.receive(new Buffer('display=029,this is the full display datafoobar=baz!power_on!blahblah!product_version=06,V2.1.0crap'));
+        rctl._receive(new Buffer('display=029,this is the full display datafoobar=baz!power_on!blahblah!product_version=06,V2.1.0crap'));
       });
     });
   });
