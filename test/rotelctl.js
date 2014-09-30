@@ -20,12 +20,28 @@ describe('rotelctl', function() {
           done();
         });
       });
+      it('should emit error on send error', function(done) {
+        rctl.sp.write.yields('ERR');
+        rctl.on('error', function(err) {
+          assert.equal(err, 'ERR');
+          done();
+        });
+        rctl.getDisplay();
+      });
       it('should callback when response received at once', function(done) {
         rctl.getDisplay(function(err, data) {
           assert.ifError(err);
           assert.equal(data, 'this is the full display data');
           done();
         });
+        rctl.receive(new Buffer('display=029,this is the full display data'));
+      });
+      it('should emit when response received at once', function(done) {
+        rctl.on('data', function(data) {
+          assert.deepEqual(data, {name: 'display', value: 'this is the full display data'});
+          done();
+        });
+        rctl.getDisplay();
         rctl.receive(new Buffer('display=029,this is the full display data'));
       });
       it('should callback when response received in pieces', function(done) {
@@ -40,12 +56,38 @@ describe('rotelctl', function() {
         rctl.receive(new Buffer('is the full display dat'));
         rctl.receive(new Buffer('a'));
       });
+      it('should emit when response received in pieces', function(done) {
+        rctl.on('data', function(data) {
+          assert.deepEqual(data, {name: 'display', value: 'this is the full display data'});
+          done();
+        });
+        rctl.getDisplay();
+        rctl.receive(new Buffer('display=029,th'));
+        rctl.receive(new Buffer('i'));
+        rctl.receive(new Buffer('s '));
+        rctl.receive(new Buffer('is the full display dat'));
+        rctl.receive(new Buffer('a'));
+      });
       it('should callback when response received in different pieces', function(done) {
         rctl.getDisplay(function(err, data) {
           assert.ifError(err);
           assert.equal(data, 'this is the full display data');
           done();
         });
+        rctl.receive(new Buffer('displ'));
+        rctl.receive(new Buffer('ay=02'));
+        rctl.receive(new Buffer('9,th'));
+        rctl.receive(new Buffer('i'));
+        rctl.receive(new Buffer('s '));
+        rctl.receive(new Buffer('is the full display dat'));
+        rctl.receive(new Buffer('a'));
+      });
+      it('should emit when response received in different pieces', function(done) {
+        rctl.on('data', function(data) {
+          assert.deepEqual(data, {name: 'display', value: 'this is the full display data'});
+          done();
+        });
+        rctl.getDisplay();
         rctl.receive(new Buffer('displ'));
         rctl.receive(new Buffer('ay=02'));
         rctl.receive(new Buffer('9,th'));
@@ -76,6 +118,23 @@ describe('rotelctl', function() {
         });
         rctl.receive(new Buffer('display=029,this is the full display datadisplay=028,and this is another response'));
       });
+      it('should emit for multiple calls when responseDefs received at once', function(done) {
+        var res = [];
+        var checkResults = function() {
+          if (res.length === 2) {
+            assert.deepEqual(res[0], {name: 'display', value: 'this is the full display data'});
+            assert.deepEqual(res[1], {name: 'display', value: 'and this is another response'});
+            done();
+          }
+        };
+        rctl.on('data', function(data) {
+          res.push(data);
+          checkResults();
+        });
+        rctl.getDisplay();
+        rctl.getDisplay();
+        rctl.receive(new Buffer('display=029,this is the full display datadisplay=028,and this is another response'));
+      });
     });
 
     describe('command with delimited response', function() {
@@ -86,12 +145,28 @@ describe('rotelctl', function() {
           done();
         });
       });
+      it('should emit error on send error', function(done) {
+        rctl.sp.write.yields('ERR');
+        rctl.on('error', function(err) {
+          assert.equal(err, 'ERR');
+          done();
+        });
+        rctl.getDisplaySize();
+      });
       it('should callback when response received at once', function(done) {
         rctl.getDisplaySize(function(err, data) {
           assert.ifError(err);
           assert.equal(data, '20,02');
           done();
         });
+        rctl.receive(new Buffer('display_size=20,02!'));
+      });
+      it('should emit when response received at once', function(done) {
+        rctl.on('data', function(data) {
+          assert.deepEqual(data, {name: 'display_size', value: '20,02'});
+          done();
+        });
+        rctl.getDisplaySize();
         rctl.receive(new Buffer('display_size=20,02!'));
       });
       it('should callback when response received in pieces', function(done) {
@@ -104,12 +179,36 @@ describe('rotelctl', function() {
         rctl.receive(new Buffer('0'));
         rctl.receive(new Buffer('2!'));
       });
+      it('should emit when response received in pieces', function(done) {
+        rctl.on('data', function(data) {
+          assert.deepEqual(data, {name: 'display_size', value: '20,02'});
+          done();
+        });
+        rctl.getDisplaySize();
+        rctl.receive(new Buffer('display_size=20,'));
+        rctl.receive(new Buffer('0'));
+        rctl.receive(new Buffer('2!'));
+      });
       it('should callback when response received in different pieces', function(done) {
         rctl.getDisplaySize(function(err, data) {
           assert.ifError(err);
           assert.equal(data, '20,02');
           done();
         });
+        rctl.receive(new Buffer('displ'));
+        rctl.receive(new Buffer('ay_size='));
+        rctl.receive(new Buffer('2'));
+        rctl.receive(new Buffer('0'));
+        rctl.receive(new Buffer(','));
+        rctl.receive(new Buffer('02'));
+        rctl.receive(new Buffer('!'));
+      });
+      it('should emit when response received in different pieces', function(done) {
+        rctl.on('data', function(data) {
+          assert.deepEqual(data, {name: 'display_size', value: '20,02'});
+          done();
+        });
+        rctl.getDisplaySize();
         rctl.receive(new Buffer('displ'));
         rctl.receive(new Buffer('ay_size='));
         rctl.receive(new Buffer('2'));
@@ -139,6 +238,52 @@ describe('rotelctl', function() {
           checkResults();
         });
         rctl.receive(new Buffer('display_size=20,02!display_size=a whole lot of crap!'));
+      });
+      it('should emit for multiple calls when responseDefs received at once', function(done) {
+        var res = [];
+        var checkResults = function() {
+          if (res.length === 2) {
+            assert.deepEqual(res[0], {name: 'display_size', value: '20,02'});
+            assert.deepEqual(res[1], {name: 'display_size', value: 'a whole lot of crap'});
+            done();
+          }
+        };
+        rctl.on('data', function(data) {
+          res.push(data);
+          checkResults();
+        });
+        rctl.getDisplaySize();
+        rctl.getDisplaySize();
+        rctl.receive(new Buffer('display_size=20,02!display_size=a whole lot of crap!'));
+      });
+    });
+    describe('mixed commands', function() {
+      it('should emit and callback', function(done) {
+        var res = [];
+        var checkResults = function() {
+          if (res.length === 5) {
+            assert.deepEqual(res[0], {name: 'display', value: 'this is the full display data'});
+            assert.deepEqual(res[1], {name: 'foobar', value: 'baz'});
+            assert.deepEqual(res[2], {name: 'power', value: 'on'});
+            assert.deepEqual(res[3], {name: 'blahblah', value: ''});
+            assert.deepEqual(res[4], {name: 'product_version', value: 'V2.1.0'});
+            done();
+          }
+        };
+        rctl.on('data', function(data) {
+          res.push(data);
+          checkResults();
+        });
+        rctl.getDisplay(function(err, data) {
+          assert.ifError(err);
+          assert.equal(data, 'this is the full display data');
+        });
+        rctl.powerOn();
+        rctl.getProductVersion(function(err, data) {
+          assert.ifError(err);
+          assert.equal(data, 'V2.1.0');
+        });
+        rctl.receive(new Buffer('display=029,this is the full display datafoobar=baz!power_on!blahblah!product_version=06,V2.1.0crap'));
       });
     });
   });
