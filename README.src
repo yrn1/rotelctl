@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/yrn1/rotelctl.svg?branch=master)](https://travis-ci.org/yrn1/rotelctl)
+
 # Control Rotel amplifiers with RS232 connection
 
 So far, this library has been tested with
