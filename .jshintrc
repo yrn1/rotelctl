@@ -10,6 +10,7 @@
     "setImmediate": true
   },
 
+  "esversion": 6,
   "node": true,
 
   "curly": true,

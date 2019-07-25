@@ -1,6 +1,6 @@
 var through = require('through2');
-var gutil = require('gulp-util');
-var File = gutil.File;
+var PluginError = require('plugin-error');
+var File = require('vinyl');
 
 module.exports = function(commandFile, opt) {
   function concat(file, encoding, callback) {
@@ -8,7 +8,7 @@ module.exports = function(commandFile, opt) {
       return callback(null, file);
     }
     if (file.isStream()) {
-      return callback(new gutil.PluginError('gulpdoc', 'doesn\'t support Streams'));
+      return callback(new PluginError('gulpdoc', 'doesn\'t support Streams'));
     }
 
     var contents = file.contents.toString();
@@ -38,7 +38,7 @@ module.exports = function(commandFile, opt) {
       cwd: file.cwd,
       base: file.base,
       path: file.base +'/README.md',
-      contents: new Buffer(lines.join('\n'))
+      contents: Buffer.from(lines.join('\n'))
     });
     return callback(null, file);
   }

@@ -33,26 +33,26 @@ describe('parser', function() {
   });
   describe('#parse', function() {
     it('should parse a sized response from exact buffer', function() {
-      var result = parser.parse(new Buffer('display=029,this is the full display data'));
+      var result = parser.parse(Buffer.from('display=029,this is the full display data'));
       assert.equal(result.responses.length, 1);
       assert.equal(result.responses[0].name, 'display');
       assert.equal(result.responses[0].value, 'this is the full display data');
       assert.equal(result.buffer.length, 0);
     });
     it('should leave a too small buffer with sized response alone', function() {
-      var result = parser.parse(new Buffer('display=029,this is the full display dat'));
+      var result = parser.parse(Buffer.from('display=029,this is the full display dat'));
       assert.equal(result.responses.length, 0);
       assert.equal(result.buffer.length, 40);
     });
     it('should parse a sized response from a too large buffer', function() {
-      var result = parser.parse(new Buffer('display=029,this is the full display datadada'));
+      var result = parser.parse(Buffer.from('display=029,this is the full display datadada'));
       assert.equal(result.responses.length, 1);
       assert.equal(result.responses[0].name, 'display');
       assert.equal(result.responses[0].value, 'this is the full display data');
       assert.equal(result.buffer.length, 4);
     });
     it('should parse multiple sized responses', function() {
-      var result = parser.parse(new Buffer('display=029,this is the full display dataproduct_version=06,V2.1.0'));
+      var result = parser.parse(Buffer.from('display=029,this is the full display dataproduct_version=06,V2.1.0'));
       assert.equal(result.responses.length, 2);
       assert.equal(result.responses[0].name, 'display');
       assert.equal(result.responses[0].value, 'this is the full display data');
@@ -61,33 +61,33 @@ describe('parser', function() {
       assert.equal(result.buffer.length, 0);
     });
     it('should parse a delimited response from exact buffer', function() {
-      var result = parser.parse(new Buffer('source=coax1!'));
+      var result = parser.parse(Buffer.from('source=coax1!'));
       assert.equal(result.responses.length, 1);
       assert.equal(result.responses[0].name, 'source');
       assert.equal(result.responses[0].value, 'coax1');
       assert.equal(result.buffer.length, 0);
     });
     it('should parse a delimited response with non-standard delimiter from exact buffer', function() {
-      var result = parser.parse(new Buffer('power_on!'));
+      var result = parser.parse(Buffer.from('power_on!'));
       assert.equal(result.responses.length, 1);
       assert.equal(result.responses[0].name, 'power');
       assert.equal(result.responses[0].value, 'on');
       assert.equal(result.buffer.length, 0);
     });
     it('should leave a too small buffer with delimited response alone', function() {
-      var result = parser.parse(new Buffer('source=coax1'));
+      var result = parser.parse(Buffer.from('source=coax1'));
       assert.equal(result.responses.length, 0);
       assert.equal(result.buffer.length, 12);
     });
     it('should parse a delimited response from a too large buffer', function() {
-      var result = parser.parse(new Buffer('source=coax1!dada'));
+      var result = parser.parse(Buffer.from('source=coax1!dada'));
       assert.equal(result.responses.length, 1);
       assert.equal(result.responses[0].name, 'source');
       assert.equal(result.responses[0].value, 'coax1');
       assert.equal(result.buffer.length, 4);
     });
     it('should parse multiple delimited responses', function() {
-      var result = parser.parse(new Buffer('source=coax1!volume=45!'));
+      var result = parser.parse(Buffer.from('source=coax1!volume=45!'));
       assert.equal(result.responses.length, 2);
       assert.equal(result.responses[0].name, 'source');
       assert.equal(result.responses[0].value, 'coax1');
@@ -96,14 +96,14 @@ describe('parser', function() {
       assert.equal(result.buffer.length, 0);
     });
     it('should parse a delimited unknown response from exact buffer', function() {
-      var result = parser.parse(new Buffer('foobar=baz!'));
+      var result = parser.parse(Buffer.from('foobar=baz!'));
       assert.equal(result.responses.length, 1);
       assert.equal(result.responses[0].name, 'foobar');
       assert.equal(result.responses[0].value, 'baz');
       assert.equal(result.buffer.length, 0);
     });
     it('should parse mixed responses', function() {
-      var result = parser.parse(new Buffer('display=029,this is the full display datafoobar=baz!power_on!blahblah!product_version=06,V2.1.0crap'));
+      var result = parser.parse(Buffer.from('display=029,this is the full display datafoobar=baz!power_on!blahblah!product_version=06,V2.1.0crap'));
       assert.equal(result.responses.length, 5);
       assert.equal(result.responses[0].name, 'display');
       assert.equal(result.responses[0].value, 'this is the full display data');

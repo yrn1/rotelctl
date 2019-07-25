@@ -18,19 +18,20 @@
     "url": "https://github.com/yrn1/rotelctl.git"
   },
   "dependencies": {
-    "async": "^2.1.4",
-    "debug": "^2.5.2",
-    "serialport": "^4.0.7"
+    "async": "^3.1.0",
+    "debug": "^4.1.1",
+    "serialport": "^7.1.5"
   },
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-jshint": "^2.0.4",
-    "gulp-mocha": "^3.0.1",
-    "gulp-util": "^3.0.8",
-    "jshint": "^2.9.4",
+    "gulp": "^4.0.2",
+    "gulp-jshint": "^2.1.0",
+    "gulp-mocha": "^6.0.0",
+    "plugin-error": "^1.0.1",
+    "vinyl": "^2.2.0",
+    "jshint": "^2.10.2",
     "jshint-stylish": "^2.2.1",
-    "mocha": "^3.2.0",
-    "sinon": "^1.17.6",
-    "through2": "^2.0.3"
+    "mocha": "^6.2.0",
+    "sinon": "^7.3.2",
+    "through2": "^3.0.1"
   }
 }

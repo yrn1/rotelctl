@@ -1,37 +1,35 @@
-"use strict";
+const { src, dest, series, parallel } = require('gulp');
+const mocha = require('gulp-mocha');
+const jshint = require('gulp-jshint');
+const stylish = require('jshint-stylish');
+const debug = require('debug');
+const gulpdoc = require('./gulpdoc');
 
-var gulp = require('gulp');
-var mocha = require('gulp-mocha');
-var jshint = require('gulp-jshint');
-var stylish = require('jshint-stylish');
-var debug = require('debug');
-var gulpdoc = require('./gulpdoc');
-
-gulp.task('lint', function() {
-  return gulp.src(['*.js', '*.json', 'lib/*.js', 'public/js/*.js', 'test/*.js'])
+function lint() {
+  return src(['*.js', '*.json', 'lib/*.js', 'public/js/*.js', 'test/*.js'])
     .pipe(jshint())
     .pipe(jshint.reporter(stylish));
-});
+}
 
 
-gulp.task('enableDebug', function() {
+function enableDebug() {
   debug.enable('rotelctl*');
-});
+}
 
-gulp.task('test', function() {
-  return gulp.src(['test/*.js'], { read: false })
-    .pipe(mocha({
-      reporter: 'spec',
-      globals: {}
-    }));
-});
+function test() {
+  return src(['test/*.js'], { read: false })
+    .pipe(mocha({ reporter: 'spec' }));
+}
 
-gulp.task('doc', function() {
-  return gulp.src(['README.src'])
+function doc() {
+  return src(['README.src'])
     .pipe(gulpdoc('./lib/commands'))
-    .pipe(gulp.dest('.'));
-});
+    .pipe(dest('.'));
+}
 
-gulp.task('debug', ['enableDebug', 'test']);
-
-gulp.task('default', ['lint', 'test', 'doc']);
+exports.lint = lint;
+exports.enableDebug = enableDebug;
+exports.test = test;
+exports.doc = doc;
+exports.debug = series(enableDebug, test);
+exports.default = series(lint, test, doc);
