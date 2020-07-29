@@ -6,9 +6,7 @@ So far, this library has been tested with
 
 * Rotel RA-12 V02
 
-http://bwgroupsupport.com/download/rs232 lists several other Rotel components with a RS232 interface,
-so if you find that it works with, or you want to add support for, any of these devices, please let
-me know.
+http://rotel.com/en-gb/manuals-resources/rs232-protocols lists several other Rotel components with a RS232 interface, so if you find that it works with, or you want to add support for, any of these devices, please let me know.
 
 ## Usage
 ### With callbacks
